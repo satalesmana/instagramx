@@ -15,7 +15,18 @@ import {
     ScrollView
 } from 'react-native';
 
-function RegisterScreen() {
+function RegisterScreen({navigation}) {
+
+  const onhandleLoginButton = ()=>{
+    navigation.navigate('Login')
+  }
+
+  const submitRegister = () =>{
+    // call api
+    // tampilkan pesan
+    alert('Data berhasil disimpan')
+  }
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -65,7 +76,14 @@ function RegisterScreen() {
 
             <PrimaryButton 
             style={style.loginFacebook}
+            onPress={submitRegister}
             title="Sign up"
+            />
+
+          <PrimaryButton 
+            style={style.loginFacebook}
+            title="Login"
+            onPress={onhandleLoginButton}
             />
         </View>
       </ScrollView>
