@@ -9,7 +9,8 @@ import {
   SearchScreen,
   VideohScreen,
   StoreScreen,
-  ProfileScreen
+  ProfileScreen,
+  EditProfile
 } from './pages'
 
 const Stack = createNativeStackNavigator();
@@ -55,8 +56,9 @@ const MainScreen = ()=>{
         }}/>
       <Tab.Screen 
         name="Profile" 
-        component={ProfileScreen} 
+        component={ProfileScreen}
         options={{
+          headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <MaterialIcon name="account-circle-outline" color={color} size={size} />
           ),
@@ -71,6 +73,7 @@ function App() {
       <Stack.Navigator initialRouteName='Main'>
         <Stack.Screen name="Main" component={MainScreen} options={{headerShown:false}} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown:false}} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>

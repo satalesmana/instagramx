@@ -3,6 +3,7 @@ import IconAdd from './IconAdd.png';
 import IconLove from './IconLove.png';
 import IconFacebook from './facebook-icon.png';
 import Kucing from './kucing.jpeg'
+import Verified from './verified.png'
 
 
 export {
@@ -10,5 +11,6 @@ export {
     IconAdd,
     IconLove,
     IconFacebook,
-    Kucing
+    Kucing,
+    Verified
 }

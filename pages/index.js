@@ -5,6 +5,7 @@ import SearchScreen from "./search";
 import VideohScreen from "./video";
 import StoreScreen from "./store";
 import ProfileScreen from "./profile"
+import EditProfile from './profile/edit'
 
 export{
     HomeScreen,
@@ -13,5 +14,6 @@ export{
     SearchScreen,
     VideohScreen,
     StoreScreen,
-    ProfileScreen
+    ProfileScreen,
+    EditProfile
 }
