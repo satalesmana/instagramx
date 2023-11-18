@@ -1,10 +1,8 @@
-import {
-    AppLogo,
-    IconFacebook
-} from '../../assets'
-import {
-  PrimaryButton
-} from '../../components'
+import { AppLogo, IconFacebook } from '../../assets'
+import { PrimaryButton, LoadingUi } from '../../components'
+import { useSelector, useDispatch } from 'react-redux'
+import * as React from 'react';
+import CApi from '../../lib/CApi';
 import { 
     View, 
     Text, 
@@ -14,7 +12,6 @@ import {
     SafeAreaView,
     ScrollView
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux'
 import { 
   setRegisterEmail, 
   setRegisterFullName,
@@ -24,16 +21,34 @@ import {
 
 function RegisterScreen({navigation}) {
   const register = useSelector((state) => state.register)
+  const [isLoading, setLoading]= React.useState(false)
   const dispatch = useDispatch()
 
   const onhandleLoginButton = ()=>{
     navigation.navigate('Login')
   }
 
-  const submitRegister = () =>{
-    // call api
-    // tampilkan pesan
-    alert('Data berhasil disimpan')
+  const submitRegister = async () => {
+    try{
+      setLoading(true)
+      const body= {
+        "dataSource": "Cluster0",
+        "database": "izonovel",
+        "collection": "anggota",
+        "document": register
+      }
+      
+      const respose = await CApi.post('/action/insertOne',body)
+      setLoading(false)
+      if(respose) {
+        alert('Data berhasil disimpan')
+      }
+    }catch(error){
+      setLoading(false)
+      console.error('error',error)
+      alert(error.message)
+    }
+    
   }
 
   return (
@@ -104,6 +119,7 @@ function RegisterScreen({navigation}) {
             />
         </View>
       </ScrollView>
+      <LoadingUi loading={isLoading}/>
     </SafeAreaView>
   );
 }
