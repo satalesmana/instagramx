@@ -2,6 +2,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import store from './store'
+import { Provider } from 'react-redux'
 import {
   HomeScreen,
   LoginScreen,
@@ -69,14 +71,16 @@ const MainScreen = ()=>{
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Main'>
-        <Stack.Screen name="Main" component={MainScreen} options={{headerShown:false}} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown:false}} />
-        <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Login'>
+          <Stack.Screen name="Main" component={MainScreen} options={{headerShown:false}} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown:false}} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

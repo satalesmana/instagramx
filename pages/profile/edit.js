@@ -6,18 +6,20 @@ import {
   ToastAndroid,
   Image,
   TextInput,
-  ProgressBarAndroidComponent,
   ScrollView
 } from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import { Kucing } from '../../assets/index'
+import * as ImagePicker from 'expo-image-picker';
+
 
 const EditProfile = ({ navigation }) => {
   const [name, setName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [pronouns, setPronouns] = useState('')
   const [bio, setBio] = useState('')
-
+  const [image, setImage] = useState(null);
+  
   const onSave = ()=>{
     const sendData = { 
       name,
@@ -31,10 +33,19 @@ const EditProfile = ({ navigation }) => {
     //navigation.goBack()
   }
 
-  const changeProfilePicture = () => {
-    // Implement the logic to change the profile picture here
-    // You can open a file picker or camera to select a new picture
-    // After selecting a new picture, update the 'assets' state with the new image URI
+  const changeProfilePicture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   return (
@@ -66,17 +77,17 @@ const EditProfile = ({ navigation }) => {
         <View>
           <View style={{ padding: 20, alignItems: 'center' }}>
             <TouchableOpacity onPress={changeProfilePicture}>
-            <Image
-              source={Kucing}
-              style={{ width: 80, height: 80, borderRadius: 100, marginLeft: 12, }}
-            />
+              <Image
+                source={{ uri: image }}
+                style={{ width: 80, height: 80, borderRadius: 100, marginLeft: 12, }}
+              />
 
-              <Text
-                style={{
-                  color: '#3493D9',
-                }}>
-                Edit profil picture
-              </Text>
+                <Text
+                  style={{
+                    color: '#3493D9',
+                  }}>
+                  Edit profil picture
+                </Text>
             </TouchableOpacity>
           </View>
           <View style={{ padding: 30 }}>

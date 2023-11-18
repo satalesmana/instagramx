@@ -14,8 +14,17 @@ import {
     SafeAreaView,
     ScrollView
 } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux'
+import { 
+  setRegisterEmail, 
+  setRegisterFullName,
+  setRegisterUsername,
+  setRegisterPassword
+} from '../../store/reducer/registerSlice'
 
 function RegisterScreen({navigation}) {
+  const register = useSelector((state) => state.register)
+  const dispatch = useDispatch()
 
   const onhandleLoginButton = ()=>{
     navigation.navigate('Login')
@@ -40,23 +49,31 @@ function RegisterScreen({navigation}) {
             />
 
             <Text style={[style.bodyText, {marginTop:20}]}>OR</Text>
-            
+
             <TextInput
+              value={register.email}
+              onChangeText={(val)=>dispatch(setRegisterEmail(val))}
               style={[style.input, {marginTop:20}]}
               placeholder="Mobile Number or Email"
             />
 
             <TextInput
+              value={register.fullName}
+              onChangeText={(val)=>dispatch(setRegisterFullName(val))}
               style={[style.input, {marginTop:10}]}
               placeholder="Full Name"
             />
 
             <TextInput
+              value={register.userName}
+              onChangeText={(val)=>dispatch(setRegisterUsername(val))}
               style={[style.input, {marginTop:10}]}
               placeholder="User Name"
             />
 
             <TextInput
+              value={register.password}
+              onChangeText={(val)=>dispatch(setRegisterPassword(val))}
               style={[style.input, {marginTop:10}]}
               placeholder="Password"
             />
