@@ -2,9 +2,11 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Ima
 import React from 'react';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux'
 import { Verified, Kucing } from '../../assets' 
 
 function ProfileScreen({ navigation }) {
+  const user = useSelector((state) => state.user)
   const onhandleLoginButton = () => {
     navigation.navigate('EditProfile');
   }
@@ -14,7 +16,7 @@ function ProfileScreen({ navigation }) {
       <View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Icon name="arrow-back" size={30} color="black" />
-          <Text style={styles.username}>Bapa lu</Text>
+          <Text style={styles.username}>{user.fullName}</Text>
           <Image
             source={Verified}
             style={{ width: 20, height: 20, marginLeft: 4 }}

@@ -1,9 +1,8 @@
-
-
 import { AppLogo } from '../../assets'
 import * as React from 'react';
 import { PrimaryButton, LoadingUi} from '../../components'
 import CApi from '../../lib/CApi';
+import {  useDispatch } from 'react-redux'
 import { 
   View, 
   Text, 
@@ -14,11 +13,18 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import{
+  setUserId,
+  setUserEmail,
+  setUserFullName,
+  setUserName
+} from '../../store/reducer/userSlice'
 
 function LoginScreen({navigation}) {
   const [isLoading, setLoading]= React.useState(false);
   const [username, setUsername]= React.useState(null);
   const [password, setPassword]= React.useState(null);
+  const dispatch = useDispatch()
 
   const onhandleLoginButton = async ()=>{
     setLoading(true)
@@ -37,6 +43,11 @@ function LoginScreen({navigation}) {
       setLoading(false)
       if(data){
         if(data.documents.length > 0){
+          dispatch(setUserId(data.documents[0]._id))
+          dispatch(setUserEmail(data.documents[0].email))
+          dispatch(setUserFullName(data.documents[0].fullName))
+          dispatch(setUserName(data.documents[0].userName))
+
           navigation.navigate('Main')
         }else{
           alert('username dan password tidak ditemukan')
