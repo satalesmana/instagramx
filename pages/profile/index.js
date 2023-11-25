@@ -10,6 +10,13 @@ function ProfileScreen({ navigation }) {
   const onhandleLoginButton = () => {
     navigation.navigate('EditProfile');
   }
+  
+  const oneEditProfile = () =>{
+    navigation.navigate('EditProfile',{
+      userid: user.id,
+      email: user.email
+    })
+  }
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -62,7 +69,7 @@ function ProfileScreen({ navigation }) {
 
       {/* Tombol Edit dan Share Profile */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.editProfileButton} onPress={() => navigation.navigate('EditProfile')}>
+        <TouchableOpacity style={styles.editProfileButton} onPress={oneEditProfile}>
           <Text style={styles.editProfileButtonText}>Edit Profile</Text>
         </TouchableOpacity>
 

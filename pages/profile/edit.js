@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,29 +8,94 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
+import {  useDispatch } from 'react-redux'
+import{
+  setUserName,
+  setUserFullName,
+} from '../../store/reducer/userSlice'
 import Ionic from 'react-native-vector-icons/Ionicons';
-import { Kucing } from '../../assets/index'
 import * as ImagePicker from 'expo-image-picker';
+import CApi from '../../lib/CApi';
+import { LoadingUi} from '../../components'
 
-
-const EditProfile = ({ navigation }) => {
+const EditProfile = ({ route, navigation }) => {
+  const { userid, email } = route.params;
+  const [isLoading, setLoading]= React.useState(false);
   const [name, setName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [pronouns, setPronouns] = useState('')
   const [bio, setBio] = useState('')
   const [image, setImage] = useState(null);
-  
-  const onSave = ()=>{
-    const sendData = { 
-      name,
-      'account_name':accountName,
-      'sebutan':pronouns,
-      'profile':bio 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    onFetchData()
+  },[]);
+
+  const onFetchData = async () =>{
+    setLoading(true)
+    try{
+      const body={
+        "dataSource":"Cluster0",
+        "database":"izonovel",
+        "collection":"anggota",
+        "filter": {
+          "_id": { "$oid": userid }
+        }
+      }
+      const {data} = await CApi.post('/action/find',body)
+      setLoading(false)
+      if(data){
+        if(data.documents.length > 0){
+          setName(data.documents[0].fullName)
+          setAccountName(data.documents[0].userName)
+        }
+      }
+    }catch(error){
+      setLoading(false)
+      console.error(err)
+    }
+  }
+
+  const onSave = async ()=>{
+    setLoading(true)
+    try{
+      const body={
+        "dataSource":"Cluster0",
+        "database":"izonovel",
+        "collection":"anggota",
+        "filter": { "_id": { "$oid": userid } },
+        "update": {
+          "$set": {
+            "fullName": name,
+            "userName": accountName
+          }
+      }
+      }
+      const res = await CApi.post('/action/updateOne',body)
+      setLoading(false)
+      if(parseInt(res.data.modifiedCount) > 0){
+        dispatch(setUserFullName(name))
+        dispatch(setUserName(accountName))
+      }
+      navigation.navigate('Profile')
+      
+    }catch(error){
+      setLoading(false)
+      console.error(err)
     }
 
-    alert(JSON.stringify(sendData))
-    ToastAndroid.show('Edited Successfully!', ToastAndroid.SHORT);
-    //navigation.goBack()
+
+    // const sendData = { 
+    //   name,
+    //   'account_name':accountName,
+    //   'sebutan':pronouns,
+    //   'profile':bio 
+    // }
+
+    // alert(JSON.stringify(sendData))
+    // ToastAndroid.show('Edited Successfully!', ToastAndroid.SHORT);
+    // //navigation.goBack()
   }
 
   const changeProfilePicture = async () => {
@@ -189,6 +254,7 @@ const EditProfile = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <LoadingUi loading={isLoading}/>
     </View>
   );
 };
